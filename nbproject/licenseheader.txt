@@ -1,0 +1,9 @@
+<#if licenseFirst??>
+${licenseFirst}
+</#if>
+${licensePrefix}TodoList API corso Udemy
+${licensePrefix}Pietro Onesti ${licensePrefix}
+${licensePrefix}2023 ${licensePrefix}
+<#if licenseLast??>
+${licenseLast}
+</#if>
