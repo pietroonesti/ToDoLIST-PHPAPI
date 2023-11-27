@@ -10,21 +10,21 @@ declare (strict_types=1);
 
 //include 'src/TaskController.php';
 //require dirname(__DIR__) . "/vendor/autoload.php";
-require "vendor/autoload.php";
+require "../vendor/autoload.php";
 
 //definisco l'ErrorHandler
 set_error_handler("ErrorHandler::handleError");
 set_exception_handler("ErrorHandler::handleException");
 
 //dotenv da composer
-$dotenv = Dotenv\Dotenv::createImmutable(dirname(".env"));
+$dotenv = Dotenv\Dotenv::createImmutable(dirname("../.env"));
 $dotenv->load();
 
 //prendo la url
 $path = parse_url($_SERVER["REQUEST_URI"], PHP_URL_PATH);
 $parts = explode ("/" , $path);
-$resource = $parts[2];
-$id = $parts[3] ?? null;
+$resource = $parts[3];
+$id = $parts[4] ?? null;
 //echo $resource . ' - '. $id;
 //echo '<br>';
 //var_dump($parts);
@@ -35,6 +35,7 @@ $id = $parts[3] ?? null;
 if ($resource != "task"){
     http_response_code(400);
     echo 'RICHIESTA ERRATA';
+    
     exit();
 }
 //print_r($parts);

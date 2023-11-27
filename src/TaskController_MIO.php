@@ -59,9 +59,6 @@ class TaskController {
             }
             
             else {
-//                http_response_code(405);
-//                header("Allow: GET - POST");
-//                echo 'METHOD ERROR';
                 $this->respondMethodNotAllowed("GET, POST");
             }
             
@@ -87,7 +84,6 @@ class TaskController {
                 // FASE UPDATE - PATCH
                 //TEST: http patch http://localhost:8888/ToDoListApi/task/16 name="CHANGED_NOW" priority:=23 is_completed:=1
                 
-                // FASE UPDATE - PATCH
                 
                 case "PATCH";
                 
@@ -105,22 +101,14 @@ class TaskController {
                     return;
                 }    
                 
-                //QUERY UPDATE
-                //$rows il n di record aggiornati oppure zero se l'imput è vuoto
-                $rows = $this->gateway->update($id, $data);
-                echo json_encode(["message" => "Task Updated", "rows" => $rows]);
+                $this->gateway->update($id, $data);
                 
                 
-//                  echo "update $id";
+//                    echo "update $id";
                     break;
-                    
                 
-                //DELETE TASK
                 case "DELETE":
-                    
-                    $rows = $this->gateway->delete($id);
-                echo json_encode(["message" => "Task Deleted", "rows" => $rows]);
-//                    echo "delete $id";
+                    echo "delete $id";
                     break;
                 
 //                case "POST":
@@ -160,33 +148,36 @@ class TaskController {
     }
     
     //funzione che gestisce gli errori di inserimento dei dati
-    private function getValidationErrors(array $data, bool $is_new = true): array {
+    private function getValidationErrors(array $data): array {
         
 //        $errors[]; le parentesi  mi danno errore
 //        $errors = array();
             $errors = array();
         
-//        if (count($data) === 0){
+        if (array_count_values($data) == null) {
+            
+            $errors = ["!!input VUOTO!!"];
+         } 
+         elseif(empty($data["name"])){
 //            
-//            $errors = ["!!input VUOTO!!"];
-//         }
-            
-        if($is_new && empty($data["name"])){
-            
             $errors = ["!!name is required!!"];
+            
+//        if(empty($data["name"])){
+//            
+//            $errors = ["!!name is required!!"];
             
         }
         
-        if (!isset(($data["priority"]))){
+        elseif (!isset(($data["priority"]))){
             
             $errors = ["!!priority is required!!"];
          }
          
-        if(!empty($data["priority"])){
-            
-            if(filter_var($data["priority"], FILTER_VALIDATE_INT) === false){
-                
-                $errors = ["priority must be an integer"];
+                if(!empty($data["priority"])){
+
+                    if(!is_int($data["priority"])){
+
+                        $errors = ["priority must be an integer"];
             }
         }
        
